@@ -1,0 +1,37 @@
+include: 'https://gitlab.com/eric.fu/hola/raw/master/.gitlab-common.yml'
+
+build admin:
+  extends: .build
+  variables:
+    REPOSITORY_NAME: service.admin
+    BUILD_URL: cmd/app/*.go
+
+build worker_reporter:
+  extends: .build
+  variables:
+    REPOSITORY_NAME: worker.reporter
+    BUILD_URL: cmd/reportworker/*.go
+
+admin dev:
+  extends: .deploy_dev
+  variables:
+    APP: admin
+
+admin prod:
+  extends: .deploy_prod
+  variables:
+    APP: admin
+
+worker_reporter dev:
+  extends: .deploy_dev
+  variables:
+    APP: worker-reporter
+    VALUE_FILE: worker.reporter.yaml
+    STRATEGY: replace
+
+worker_reporter prod:
+  extends: .deploy_prod
+  variables:
+    APP: worker-reporter
+    VALUE_FILE: worker.reporter.yaml
+    STRATEGY: replace
